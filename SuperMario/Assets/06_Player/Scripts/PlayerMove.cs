@@ -11,6 +11,7 @@ public class PlayerMove : MonoBehaviour
 
     private Transform playerTransform;
     private Rigidbody2D playerRigidbody2D;
+
     private RaycastHit2D rayHit2D;
 
     private void OnDrawGizmos()
@@ -28,7 +29,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         move = Vector2.zero;
-        rayHit2D = Physics2D.Raycast(transform.position, Vector2.down * 0.1f, LayerMask.GetMask("FLOOR"));
+        rayHit2D = Physics2D.Raycast(transform.position, Vector2.down * 0.1f);
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
