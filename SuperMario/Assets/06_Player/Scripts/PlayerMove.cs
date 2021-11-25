@@ -7,18 +7,12 @@ public class PlayerMove : MonoBehaviour
     public float speed = 1.0f;
     public float upForce = 1.0f;
 
+    private int jumpCount = 1;
+
     private Vector2 move;
 
     private Transform playerTransform;
     private Rigidbody2D playerRigidbody2D;
-
-    private RaycastHit2D rayHit2D;
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, Vector2.down * 0.1f);
-    }
 
     private void Start()
     {
@@ -29,7 +23,6 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         move = Vector2.zero;
-        rayHit2D = Physics2D.Raycast(transform.position, Vector2.down * 0.1f);
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
@@ -45,11 +38,20 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && rayHit2D.collider != null)
+        if (Input.GetKeyDown(KeyCode.W) && jumpCount > 0)
         {
             playerRigidbody2D.AddForce(Vector2.up * upForce);
+            jumpCount--;
         }
 
         transform.Translate(move.normalized * speed * Time.deltaTime, Space.Self);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision != null && jumpCount == 0)
+        {
+            jumpCount = 1;
+        }
     }
 }
